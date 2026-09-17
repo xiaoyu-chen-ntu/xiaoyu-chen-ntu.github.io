@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Xiaoyu Chen · 陈晓宇</title>
+<style>
+  :root{
+    --paper:#FAF8F3; --ink:#1C1B19; --muted:#67635B; --faint:#928D83;
+    --accent:#12595E; --accent-soft:#2F7E82; --line:#E6E1D6; --card:#FFFFFF;
+    --tag-bg:#EDEAE1; --tag-ink:#4C4941;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,ui-serif,serif;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --cjk:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",STSong,serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.62;font-size:16px;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;text-underline-offset:2px;}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
+
+  /* language switching */
+  .zh{display:none;}
+  :root[data-lang="zh"] .zh{display:inline;}
+  :root[data-lang="zh"] .en{display:none;}
+  .zh{font-family:var(--cjk);}
+
+  .wrap{max-width:840px;margin:0 auto;padding:0 24px;}
+
+  nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 90%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  nav .wrap{display:flex;gap:20px;align-items:center;height:56px;overflow-x:auto;}
+  nav .brand{font-family:var(--serif);font-weight:600;font-size:1.05rem;margin-right:auto;white-space:nowrap;}
+  nav a{color:var(--muted);font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;}
+  :root[data-lang="zh"] nav a{text-transform:none;letter-spacing:.02em;font-size:.9rem;}
+  nav a:hover{color:var(--accent);text-decoration:none;}
+  .langbtn{background:none;border:1px solid var(--line);color:var(--accent);border-radius:999px;
+    padding:5px 14px;cursor:pointer;font-size:.8rem;font-weight:600;letter-spacing:.03em;flex:none;font-family:var(--sans);}
+  .langbtn:hover{border-color:var(--accent);background:var(--card);}
+  .langbtn .zh{font-family:var(--cjk);}
+
+  header{padding:60px 0 30px;}
+  .header-flex{display:flex;gap:34px;align-items:center;flex-wrap:wrap-reverse;}
+  .header-text{flex:1 1 320px;min-width:0;}
+  .headshot{flex:none;width:158px;height:190px;object-fit:cover;object-position:center 20%;
+    border-radius:14px;border:1px solid var(--line);box-shadow:0 3px 16px rgba(20,20,20,.09);}
+  @media (max-width:560px){.headshot{width:122px;height:146px;}}
+  .name{font-family:var(--serif);font-weight:600;line-height:1.05;
+    font-size:clamp(2.5rem,6vw,3.6rem);letter-spacing:-.015em;text-wrap:balance;margin:0;}
+  .name .cn{color:var(--accent);font-weight:500;font-family:var(--cjk);}
+  .role{font-size:1.06rem;color:var(--ink);margin:14px 0 2px;font-weight:500;}
+  .affil{color:var(--muted);margin:0;}
+  .contact{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px;font-size:.92rem;}
+  .contact span{color:var(--faint);}
+
+  section{padding:26px 0;border-top:1px solid var(--line);}
+  h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;letter-spacing:-.01em;
+    margin:0 0 4px;display:flex;align-items:baseline;gap:12px;}
+  h2 .zh{font-family:var(--cjk);}
+  h2 .idx{font-family:var(--sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;}
+  .lead{color:var(--muted);max-width:64ch;margin:2px 0 0;}
+  .lead .zh{font-family:var(--cjk);}
+
+  .interests{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+    padding:6px 15px;font-size:.9rem;color:var(--ink);}
+  .chip .zh{font-family:var(--cjk);}
+
+  .group-label{font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);
+    font-weight:700;margin:26px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line);}
+  :root[data-lang="zh"] .group-label{text-transform:none;letter-spacing:.02em;font-size:.92rem;}
+  .group-label .zh{font-family:var(--cjk);}
+  .group-label:first-of-type{margin-top:18px;}
+
+  ol.papers{list-style:none;margin:0;padding:0;counter-reset:p;}
+  ol.papers li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid var(--line);}
+  ol.papers li:last-child{border-bottom:0;}
+  ol.papers li::before{counter-increment:p;content:counter(p);position:absolute;left:0;top:13px;
+    font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--faint);font-weight:600;}
+  .ptitle{font-weight:600;color:var(--ink);}
+  .ptitle .zh{font-family:var(--cjk);font-weight:600;}
+  .pmeta{color:var(--muted);font-size:.93rem;margin-top:2px;}
+  .pmeta .zh{font-family:var(--cjk);}
+  .pmeta em{color:var(--ink);font-style:italic;}
+  .tag{display:inline-block;background:var(--tag-bg);color:var(--tag-ink);border-radius:5px;
+    font-size:.72rem;letter-spacing:.02em;padding:2px 8px;margin-left:2px;vertical-align:1px;white-space:nowrap;}
+
+  .edu{display:flex;flex-direction:column;gap:14px;margin-top:10px;}
+  .edu-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;}
+  .edu-head .school{font-weight:600;flex:1 1 auto;min-width:0;}
+  .edu-head .school .zh{font-family:var(--cjk);}
+  .edu-head .when{color:var(--faint);font-size:.88rem;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none;}
+  .edu-detail{color:var(--muted);font-size:.93rem;margin-top:2px;}
+  .edu-detail .zh{font-family:var(--cjk);}
+
+  .misc p{margin:8px 0;color:var(--muted);}
+  .misc b{color:var(--ink);font-weight:600;}
+  .misc .zh{font-family:var(--cjk);}
+
+  .plainlist{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .plainlist li{padding-left:17px;position:relative;color:var(--muted);}
+  .plainlist li::before{content:"";position:absolute;left:3px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--accent);}
+  .plainlist .zh{font-family:var(--cjk);}
+  .plainlist b{color:var(--ink);font-weight:600;}
+
+  footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--faint);font-size:.85rem;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  footer .zh{font-family:var(--cjk);}
+
+  @media (max-width:560px){
+    header{padding:42px 0 24px;}
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <span class="brand">Xiaoyu Chen</span>
+    <a href="#research"><span class="en">Research</span><span class="zh">研究</span></a>
+    <a href="#publications"><span class="en">Publications</span><span class="zh">发表</span></a>
+    <a href="#working"><span class="en">Working Papers</span><span class="zh">工作论文</span></a>
+    <a href="#education"><span class="en">Education</span><span class="zh">教育</span></a>
+    <button class="langbtn" id="lang" aria-label="Switch language"><span class="en">中文</span><span class="zh">EN</span></button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <div class="header-flex">
+      <div class="header-text">
+        <h1 class="name">Xiaoyu Chen <span class="cn">陈晓宇</span></h1>
+        <p class="role"><span class="en">Research Fellow, Nanyang Business School, NTU</span><span class="zh">研究员，新加坡南洋理工大学商学院</span></p>
+        <p class="affil"><span class="en">Ph.D. in Finance, Tsinghua University PBC School of Finance</span><span class="zh">金融学博士，清华大学五道口金融学院</span></p>
+        <div class="contact">
+          <a href="mailto:xiaoyu.chen@ntu.edu.sg">xiaoyu.chen@ntu.edu.sg</a>
+          <a href="mailto:chenxy.22@pbcsf.tsinghua.edu.cn">chenxy.22@pbcsf.tsinghua.edu.cn</a>
+          <span><span class="en">Singapore · Beijing</span><span class="zh">新加坡 · 北京</span></span>
+        </div>
+      </div>
+      <img class="headshot" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wgARCAHXAaQDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAECAwQFBgf/xAAZAQEBAQEBAQAAAAAAAAAAAAAAAQIEAwX/2gAMAwEAAhADEAAAAcQPWUMEwAABghgmAAAAAAAxDQAAAAAAIAAAIYIaACEAIAE0AAAAATGWgwQwQwQwEwAAAEMAAAAABDECGAAAAAAgACagBAAIAAATQAAAWjLUwAYIYIYIYIYIAEwAAAFRj8XL6rhcyUt9dcy3u+arT6Vb4Dv2egcZUJpAAQAIIEAAhoBoAAAAuAtYAAADEMEMEMEMENAALnbPARmY5okgSqqjY8EzfTSj03rPmP0LWdiasE0CAEECAAQxAxMAAALwLQAAYmCgCAAAxDBDBAHl/K9bBmxNBLVD2PpPHo+TXfVrM6+P1fXuNZ85XveBvz4Xu/DdL18ffldmsoASagQAhDEDEDEDAGINAFoADQMTUAQABgAAAAnE+e06acas9NZ6fw7Nt+m3w6Mc9QmLN1ql4fJ9Fij45n9H57u+Z7H0nhvb7w01Yk1AhAIAEMTGIGJjEGkC0AAAABgAAMAAAGAAeVtu6fh09fq8ns8vbp0RssaBIV2VS5ef0cEvivEfUPnfTxdr1PD7vRzJCRJoSENCGIGIGJjEwANIF0ADEDAQaBgDEwAGADRLxevzO3zdnnNvdvx6YfUc2UvaFhzTl0LeM3R4+3Go+D9z4zfn3dbXZwJOIk0JCBCGIGJjEEhAwDUgumIGIGJoNA2gbQMAYmFtW3w6qrS3k7csfTW6z4r0PXwWbefthjXk+L9Io9vLi7tUfH18/wAjuddjz1PV5XZxJNevgotCi0JNQCCQgbToaYAGpA0NFMQMTBoRtMYmMTBphpzXeXtfdBcX0/SX49N81yN3Lt6+a/DJ2GmkeV0uHGHTG/Hpz+fZX9H5UVJb84pxEnEQKAAGAwdDTAA0ANAANFMQNoJCaNoG0wBg0zYsujn6+/t5uvm648vcrefp2TS9wMynz/W8+nXz46PbwrhOPXwxUokVKJGMkRTIQwGmDChgAwuAaAAAoaBtBJxY2mjExtA2mOUHL293B7vz/qefn38j35ufsbFo0z5058vHc+jkUWurkjGUSKaiMZRIqURJoAcDTBp0MAALQTTEDEDE6biyTixtNG0waYwBtWketkx/M+t623hbdZ6McmWL/NuMsJ9Ti9XFZGUenmUXEUZRhRaIpoQAmEDTGBTAAYTENNADQMTpuLJNBJoSQmNpjMfGL+14j7RNcKXJ7vzPqc7J6W08tL0onE6O7sXNfiPpfzf6PzeD0fN9bWdiEKLjBFoSaEAAEDTGBTAAYMBoAAAYmNp02mNkCx8rnp2eTlmRezTXpPd4t1eMn7rwfB3bNFb5+myc/Ue3hj3Sj28Ob5H9E+YbxiVoatXn7Y7Sx6oEAk0AKGJg0xiYNOgAkgaGgYmDToaZLNh5J08hbZBu4z3Ei/1fjfplncsspXpcb5/5j0z9P7XyT6r4+vomJhRnmPA+Q24LIk6ihtlJaF+vkRjsrFriQiGJg0EhBIQMCpANAANMAB03YK5DkJcSq1DVTeV21aDB9b+O/Yjv8jt0HxiPqeB9Hm08vpfT4t62W/53S/Meh+aHnYSLK82uJVKq2UBkK74Vmd8Is2Za43uqzJiYxMYgkILALoAAAYmHK6vDqmVV9l2TbgN0yNisjSZfrHyz6aezo0cizwNfM6f1uL0HuvMeo+b1Si4+W+T8p6fKUQkM9+MvkTWJMSBIIJzWOS+iNGrDtwk4sbixuLGILhF0xAxMAA873eDUdWPZZPJppN1dtVlmLocwt+m/M/pR7X5v9D+R9PlXoph9Th+i+i4vb+J9E8h6b4vnVVyaJOJnnTqGNDEwEEZwkU03VRPXh3ZracDQSEDALRF0xA3FjcWY+Ttw1Dbh3VFEk1VzjZbyejhi/wCgfP8A2dev+Yev8d9Dm23Zd/R4/TdcfOfH7vN+LWhbgEWbVkLbBkFOA5QkKFlRdFqKadGcr6XL3ZugThiBuLGILRF0xA2gbizi55Ko6suqo2V2pemWZhTheh8/KuxzpX/Y4dfW5XpJPX/H+n575HfXuybBg0zW59YJgoTiJxmQgrJRxZHNpzmXbi05bmjJiKYgkRC4C6GgYmOEs5yEKlqzaAthOy9jsxWZ9MABZuwdH7PDshlw8vsY9NPB0b7ITsjVfmLZ2MqVsjNDVSVTjGWu2i4JjI0X1GKRGOqBg0FAEABcI1pgDEx4tnNMSap3U3ErIWWXslZydmDdLJMRbsGnq8oojzetN2Pqw5hZS8+0ZFjIodLrhZ9PLXoXQmKQBTZAy06M0dgRg0AAAAtwnqgAxA+T1ePVScSV1NxOcLLNDjKzi7+fvlsTiO3DoLqrM5DqYehY4TwlumMkQgaUBVuqWXD6vJjvWU3UMCMJIoxb+fHaIvFaAAAALhGqxAxMXG6vKIxlCp203k7KrbNFdlFnL6PO6GbMHVuLWFeTVlOrbGdkMsNw2JCMokYkZYVWUmfC7JevdRdY0wigK+d0ufHTnXZiggYgYhLRF0xAxFUc/XjqEJQLb8+gdlc7NePdy0zb8G6WdlV9JOBRKjeah82w6tFyMERjKEsIOshWVHH6HN6Wb1LabtSQBGMkQ5/QwxuuovxUAAAAFgi1iABVhz21VVCdRdqyaxyrdb+N2eAzbsyapqWjNfYVSpKO1yeuLkvYmxwnZFOKquVcRosoFROiOZ1eF3Jro6cWvWZOINAVZNeaNF+bTigAAAATE7oEI0BzKrcukayJq15NYk4HS816XyydLTnvWWzHks1U0Tl26lz7k6lV42lUYyjCrnnIUuqFU6Dkdrg9Sa7O/ndDUkpCRAI5NmOLNePXisRDEDEExrVaaUHA52ayGpRGUDbpo0FcZQNvmu951O1dTcspRCqqcjZRX0bmTZTEyEZ1xHDZmFTNxmzdPlS8vpZ+hL0+ly+lqTISslGSFi2YolsxbcVicoAgAWAa0gArA5cA1KqgOjaBCsC/zYSdywLbEBntAn0gZEFDAjlAzoEbCXPygW24M3qXhqDCywArwhFm0MVgSgCMBf/EADIQAAEDAgQDCAICAgMBAAAAAAECAAMEERAxIQUSMiITIFAzBiMwQRRANEIkJRU1Q3D/2gAIAQEAAQUC/wDnV/EZJY43LuMIctdOo/l1D/KqQxXVINHuQWUSIX4bXVQgRNMuVQD4S+F8ALXE0BxlcZpq+5GvhVdOIIlqVIoaO+PEHx2fFdalXfE9sqyD4RMsRx1ExmleeBs1Kd3djRqLBaFddKvji8H3xSuEa9y132KmKaQsxKDsb4JPVtyrxeD7rIpVRGNDlHGVGj21KnHRwIZo4S00saXJQwqE22R3VtkZTVUQiak2dDWGBSCFJ8FLr9asHQJJG10pUY4wBwsJfCylrQ1JdbB2sUoIU9ln4o/BVaJrA6eMyKipPb22PgiSHZ2dnZqS5EtQ03KK1WsWO0X7UZeC72gW2iJwgXjDT3S5Gt7xG5RrsI6PBt5HRQp4YEHWEXCU9wstTXnuEXHFUoIVsibUng27+VD5Uy6hc8dVXIdPusvFBOmUM2ctXTxuXdIAxuUa13u6nkqx00KOzpfBtysqCJPtjhQxWUiWlVNUCBIjWMp7kf8AGxLZ2qECXbEumSUR1flhHazeDRpUVV9ODTw6uqp+0E1IJaOg21cKuqyT7aibbsqcUm2LqppaaZcjKXuPk7fSrUZE8J8FgdUXShpQGI3wAObP/wA4QyghmMOOEJcjqet00aeGrSkJ8FhaShSKRowWdCeKVfJArXAuo0YBWvb+OJ1S+LwaM2VoU0zhOjnVpEtAmklTwjQjJqLqlOlUAq4K1G58GTMQmBxMOVN3+Km8tMuVFJTdmjCQuc9VOOioWAnwiDmjL4rAyBpnQ+0Q7sKBZLmLmPWiVaAoknwhJsqIvhuKqlAXFSGyqWYCMVXHAmRLUdKmSwTr4ZAtxq0Wm7WlbESi44wllzyWEiu0X4ZkKeS4SXZ2anKuwnlKilJ8MhKOFIugExKiqU2TUJfbhzVAAmmK3FGXSIKqrcf8Xc/CayrdIgj03TK4olpuVwMokS/cYQouOFhFhRU/Yx+pUj8ijm4h4NPUIics0kzWmSeaiownatqKkxNAu+zD7JL7MMIAdJStb9QEKqrawTcXgk1THG11My2E3cx4Een6AU1PA96pzSVkeqU6Pj0u0JUtVPShDLWbDcJO0qDhHOk+ALWlAkrA5JZZGAwLtAe3wfk7mEuFzwonhTAuklSHazpqeSYxRoiSy94n7Kmkws5R7iJFoaJ0n9xdRElyValPUu2A1YeiUeloPa4XHmHuKqNYijWp01GxiX6hlvJe5OEuZDs0qUlonB/ZqZnq0jBJBdsEupNo/TQ/1yw7hL3XfJZygLW6eFQl2iu7cYzK4UVsva1LDUtKWq6w7OzUGkqQ0zsEH9WoVwxL5g0hrcGKHOb1Hp3/AK1eVbEZ0brT/h7hSI4gtfYhc0yptrqJJ6Zl75UdlSYHUBPA9CMC7MhkPJomP6lYdP7DNyOHkwQx1Senz/rfpT9TIiVKRwx7dSyV0lJRQQR8Ad9FF77P2tWWcDZp5/ru2aU2BLSbp/Rqj7v2lhytGiGM5FcMUQ6fTh/wjkvLfJO03BKej06nrGO6VIpaZRKlYyqICRwpdmcDgkdSi1umPR+jMbznmRmrJWqgy06us8oZ+mP4z3KcU9LDxKnNrbKPYGBe71n5lbj9p65HbTuFjQKasqb9K+queNqadZWWh1Wsyc/S38Yv1JUkzCwSjhts2tDh6krvx6aIdGMyulAATicc1qZZcOf6ExtEGvOLJbhHuMtLV1VAfpQ+xKbJqJDNVI6nfgG0JtQOplRBDXTrq6vA4I614FjH6Rk1ZloPV+hWH2g1NGS3BznAZQ64elFdW9TdlRRlQEN1ubh7OkRwU79RV3aSQc2Mx0SLDvLZwViNR89aepljJTgwDmPDDCLIfpZVq31LMOJF1OK7hsupGW+V/wCLDMdIxZOKOpXf/vgpnCE+389SbzMZjIuHAOrPsjJ7Evs9w3iYy7lT2KkpJOzx33GtqEUlNUzLnltxSjGc6I0H0MRkzo0ZYKZZzp+X516rac8Iciw6vMYBSksLsIOEAHiXsKEio3ivNbPIXTp0+sE9S8Syxgs9w5Fqzp8/mWbIwTz4QtTDn/kYBoWOyjKXGHNWrVTkuXUpFhhMdEIsLYnAYZyX7ha3D5nzVB9rBPNhEy0tetUM8EKQkxdbllf0XEOKUYo65u4WpkvJMWoGAwLkcfmfNVnTBOeETLDH8jHQE2jRgs6U4sjCY8KIQUIuyXd3ZIai83Uqs0aJ7srRz/NVc+CcYnqw4vNGK+W5OBcmpA0f2eufunAOY8VSMRjI05/NPrLgnN/UeH9IOYYpGuCi4tZhgshKKdNkYmzLJwOUJvVpPcOEmQz+ZWqjgjPCPBR6KXLDMy1BQY1hYa3SjRhz9cmP2cDhKeih1UljC+K8vtOXyKyZwQwy48JfLpOQYJ1FXImaCFBSkuQuIWQ1nhTTC+IwLLOFUbR0I6Q/vuLyOaOT5JfLZwQxhFhU6R0nlv6Rlgpp6pAxq6k8SwLDEsss4VqvbpdEJ7xa84/L+So5GcEYxZutPt0vlv6Tky1l0oupqPCinHEodxWBZZdaeuHlTkH9fWBcjh8v5KjNnBGeEeYdcfbpvKashgWt0ybRusVdUSbJxLJwOBdVnHknId0uVw+X8k3OWcI8xhHzOvPRB5bOKsjqUiyVqCEU4Kls9ws5HBRdQepGUeQ7hZcmUHl/JJzlnCHNlx85y3A6Qcgf9ndqLhHFKHVK41wp4U4k6MlllksuoPupyjyT3VteVNyfIrmUycIcC08xyrDrFytPPFH2yl3TIoulDnX2ccKbkYnFTLLLLm5oDeKNpy7hasqbl+RWZdnZwZM4Hy6rzI+VozmTLxRIIanCOGOU9pJCLd36LWdSXdktarCQ3VRHojYZ7sjp/lXzKxh5WcFH25/Pj5WhlqaNZKhXCmJLHdLJs1quSycJcszS6LizHeldPn8azZLLOEXIzgo+yrWoRk05FqdL5vPIkd5TWrDN8L4XVONLo03nT0yd0ubOmz+OXkZZZcXIzhN5SPOTk05FqcGghwPcLW7Ozs7NTUm6uGwoPPNu01wviprdN3//xAApEQABAwIFAwMFAAAAAAAAAAABAgARA0AxBBIhEEEiExQgMjNQYGFw/9oACAEDAQE/AfzgZcl+m/bOXPRqpKTbAS6dKDJc8Szu1CDDNplxJn3V07zaAE4PLgiZZp9ZYHB1tBV1de0yf1GobtQChBaAE4ceOTMssoCsXmEBC4FnlzFQNWPA9iXVXrWTaUqylKhTLAUcGZHCjpEteZGnttUmDPCKukNdQEcZlfS6xeZ+VskwWMHAekNawgNRKjJt8vUkaTxUrBODUoqO9x5NOD9YVbXVVXR06d0tUmWj43NU9rOLGFzVO7TvdLxdId90sbugiN7pVPUq9P8ADB9l/8QAJREAAQMCBgMBAQEAAAAAAAAAAQACEQNABDAQEiAhMUEyImAT/9oACAECAQE/Af6EW5rBf7IVghUBQtSU98jSFC8JpkTa1j1ypO6i0JhViCg/1CJUobU6PSpWmI+UPCa4jwnknTeAIjTeW+FRcXNk2dYSxDU6lU27WxaVKYAkcQJMJmHM92pEjjQb7txqSsN82x7CPRUlbk1heU1u0Rb16cGdKdEu8prQ3xcDD7vpOwIZ+hzizw46lVa4RyIzwgJTGbWwq32bc6YZsulek/zlHPwzYaqhgZZz6fTYWIMUzlnPpOloKxlWfzdU6+ynHv8Ajjdm7OgyRxOWbA2xQ4Hh/8QAORAAAQIDBgQEAwcDBQAAAAAAAQIAESEDECASMTBBUWEicVAyQBOBcgQjUmIUM5FCQ5KhU3CxwdH/2gAIAQEABj8C/wB6+tQD6IqcjB/qKf6qnOqS8Nbp5vpUD4bKanFRJeVyVkUKgXhqy5+Fx32eJRJe1ydnO32qmW3hJWrIMqOmIZsRz8ISkeW/k8vDcMekXMVRypJ/Z+QReT8riA+bzg5MA+RgjI+Dr72hReV88WRZ7StsvBosLP8AImyDw7jRXKRnZLwenAMq0wqxZ8Hp/M06hceJ8HR8zHZwQDB9KD8XCtSwuVvUsOU3AycWpktCeXg/MFgOb66gf2akqcrIObzLkp4Dsy0o2Jn4PEGAcc8jb7KE+2tJxJUOLXVqrKqp8hxZNJVnvYVQi01E1agVi6gjYNWH6islKUzNTi8NQQULC/cg4RB7eDYeLwoEY5nQ4vyvKzDxeHYOIEInwZXZnqGV2Ashdk1UVqxcC0jh4Ofs87kHhxAkZ2Yrs2VwgA4+DwhdilICuLKKijhP3TAsIicAyiY3Yjdw/l4ZEmzO7BwSZOJ8MxYqn9zlWV8Xi/MD4hwp1knul9ZBtxHfw/pg+oPK3l4aFX4BgAeGVKhmKQnczedsWjDs1U/6aurt4VhpGXF1ag/qElpPKyT3e7m52Y1edTQr8L9tWYy8HhmrgHwTwDT9PQTiWpj6M/6eFmjU89I4Tcyt9yoOwsI+6IOLwq83gkB1Hk88I5Wc37qx9tUz5WfnED7KrKpyN2CREvEvqVYSdmtXE24VSV4BFRg+hMe76lS4C2LSlQilGdqqdROJKhAh/l1zH8FcRbHyo4vCkWnibg7PNzl6zzR7OCBBxUY3SXUrkTJue1Vr00L2iZhyNNfyrBeKrPldSgd7iDzt6S+qXqYJuSuBP3mPmNhJMAMyzT+kJp0+O6nvi/E+klCwdtmKNeCa4H911a9iZWTcIxPB9QhdkX1ByPpSXC4TcgNg09zZ7EYIPn/8aqSfIqYDnPgxBUc4FpqIxhQPTDNp98BNaHVC1QB6lStg5CWhJwV6RI5tWgpXFTT3NtGJ6gD+zHtYuzwKgMEiWEIQJOKZG32xkj/m6SMtCO7k4+iA5M3Bao8A0uHA24EiOFIBe0P8uuuWYhK4V7mSRzZUczcgPMZBwv8Ab0p0MP3jYr5rF1OGXdlazEb8y+HZ4vvKuHD+lTkm7j2Ehpn0RLFouITwnZU+axH06ZwmXhj3k5GCezpHl/3b7KD11P8AAtlZh3LCR6xRsF9Z4Ssqj8VlSpsTJkQwvF5i6XaxVVZkkMrXubpX8BfjdHoYcbpuE8TZWTyDqEGcIByiZOYwnk8CRPhFoRwFn5dB6EebmWpVzCM1OV8Dj6YC6bVHkxYocUOnRjzLhGbgkRLo0wBE1BE2e3TP2q8uT5m6anwGh2vD0Bum2HEuFlM8Yh1FJ6sEhyffNyGHZ08jAEtVaptkOLVWqHqLHK5hGZcLuWifQE3TbTTztxoMFDJ/izi0qMByAcpQdaupQwpR5n0/pJ8gsxcbhXtkHK/3vka5OigcBcwkw4uaYAPHABqoJkCqKudkLgSM1SYGh2vjXOieQuLjDszmd2UpPxtjwuFWyZDQmyb41wNFdwSM+mTgjj+7nO2PG0nfZweTyeTye9mVgF8a40ane7PaQtgxbyTopToDXN42rP4rkTfKjs8W50VK9OdEnnc8hgwbSXnYmmO50ifTG+bDdRTNIhSUw6cmAbQLIsrOZ0TpDVN82Fi+LU0h8dKDGiNWGiWLRcxWEnZlZ30khp0RqjRLGiKQ+LA0h3Y0R6YsWAXQGVPGdMd/Tm4bRaLBewDIWZaQ5enNw3R3YtwhaUw4s0zCI4WEvmXHVSdE6puG6GLC40yfg8SszbLLWI0TqnQF8PBudeGidQ3RcHLO/wBg4nVgLPg4aB1DdF03lnk9v2chpm1XZx0Df//EACsQAAICAQQBAwQDAAMBAAAAAAEAESExQVFhEHGBkaFQMLFA8NHBIOHxcP/aAAgBAQABPyH/AOcygD9RGT5RrJDGoWkJJj30mTf5RwghohggW3BRE/TQgAgmE9IUxyiLSQjyYF0WAK1EDRYYoYLYmAkX9KKdWgTEkO5YBSnuGeflJINge7Icgk9pDERgD8kARg5DInlHDTgWyPpGHQTjVNCcIIIwiMgGv4Eg0DxhPBBCkiXhlMsCbmGfYKP0jF7UjKqQDNCkzMJAGfZJvUFhnLuewSCwYMYQbYJDLdSCP9QfoxwnQn0alA1MMACeERRKt49wCGp3QE1LICiRkvQgKyAOSN7pwpBIP0bFI04AUXJmcUiTpCAO1l3keiMADGkrcgpbEv4voxybBKUYBIRcAMIQk5hwqxChjrijhgbiONBEwGPNEM8vowRwASQ1lHDoiAWOoY6KSEo5QyMYpgMMsKgY+jyH2/wjAAipKIZR0EDHYdTQlSm4a2ZbflP0YJ8VGHGMDwAMoG3HkU6d5MnPogEksrGKAt6G6QnB0QNGEhNwjT6pE/RSY39Eo4JimIYOE55geWlD0SybGQMpKaDZtNmhMSE66Tulh9lj3iN0NtNJ3aj4QF9R4BAgQn6LVSi6ywjBH8iMGOmYnEoSGJPwQDRB7UJkmdUwAAbW7m8MbFDAGrAT0DweHdCEwyQZnwzc9wYwUCJodROhKXG+ZYT/AMD9BMkEa1eGODNYOAyQlDCAItRaAh5TUOEJBBcIACcCBFlzkhCMOaGIwFhgb2Ceyn6CUCGcEpajO6WGJDLAyiQCHb7YJQKUgogZTncATNlqeAT2U/QRSFONTwSgQydMXqkQYABsNQ4PdOQKWAJZhM4Ek3jRIrsvdm0fooaQk7pySU6SlGMIAZs0iy6tUfkEg3SUj3RVMsILOacBaAlO9ahwEp7KU/Qigg1IsIchgJhzTPUUCLBpENHTLD6tXqIiyTqlKU9lP0GAKMuHKcgYHlTc+NAsAQDKgw/N4PygrjcMCAYyzlkRSlKUpSn6COoiAWRQZQ/9ETAPRGUATpkLTwaM9FKUpSlKfocEZoiFaCGBCIJQEZr6n5zHo9FPRSn6GSUtPM4DWnUJLGEqBLsrwmXSk6oOYCGQyk+Er+sAOe3E/wDA9FP0IwBJoJCDE1b/AAiQv0LH+IgGoFHjSm2cQS3kfKcmUDAhMDc4GyVqSY+WFJ+YE9lKU/QLYWK4lglYqABow6ECQ8xn3aeifSSMFAhESR0BtoCoYSOcf8luylFKMYqIatOjns/QbQ418T2Y5yW6AtQHLY8OS1DZGoc4AIPRPqlCRYKRsEAYQyZtki4vgCaLGglkvCwHqxhOzRb69n92CMOUCjlvRoSDwA+28hiQp4c/khENCiqSgSY5FZv5yERCQwQzyD18NZQ1OpT0ioOg2tIRRvMEqNAKNil4GfwzIkftyIMg0WCXfVvkFy54SBDOmiAlB2EJdkEn5TBojp1S9Fk3QUGN5hACDg9BwgAIAhKek6sWcDDTwgDlEgyYELccp0uTBxo0gz30QQRIMj9g0E0DHlAKyjykDKROxHQHEAlHox8xOgCBgJJgDdFdpgD/ABDMmQIwVOBnM0JaF1cEANBv5/4SBm49nUzUNExhj68Pt6E4oBmeUjz79DIMp5Sel8IsQchGyAj9WGMmgyI7A7OjCEdbV9E2EGPxfMUIOmow8RkmNQru16YgssJAbvNpzgTBQWIbcXFqZGErhFOB5HRx5dqBubpJIygqzYXu0CEU1E/CHDGMOphg0RJyZHhxH1CCDg/p+SySgkrASABRqd7TjqgOyf8AFIQRj+RSJshTqNUI3NsQI5z8JpaLP4YFAYkiyxHBYRrCCwAlsClYOwNeGDRtL6PVtC9nXJSICQkBNqtGgYGaFjv0k+06dS4YT0RicYdNW6E6Rh4tlHc9FSdTSMTJmYRwJ8mSOwSzQAiAQ07FPQ+8EWWTySdXSm9UD+HqYECBoNuGEBM9YFjN8oiR0VkhOiyENj+lNdjCVxiQiCqQQgG5QgATo21KNkoDaBH2Nw7I4TpyEDvoTtEAw1LRgiA2D4pjIpkhsbV0KQAk4bzn1Y6lAAvCcw1MBOrASmy/9FInRGQJsMDD5DO4TjANoCHXVwIIwgqEfH6JMAltrCegEmU92sxaTz0wlLhS4GNH8w4okCAVbnDIhOIB/KEri5YMJZSEkkfckJcWhWkcDRNluIp5+T7pojsjh0UEYro4BnDl6J3LjJfgShzJyjo1Mcfo+POmby0ApFmPVMNkSY8pWspKkHDD8MyTTdaTh+EYS+UUItIlhAJBDHmGMVMLkImicDQOqchyKZ/tlpPwsbWlhR9kqrKM4TIxKakMlAWOTb6MhB8GAn6MYbjg6S0RI2NNHBaWfXc9ZrqNGBesNMa0mIBYMgyGFegccSItl5h4Kx1qeJIex6NifAQlG80nj/1CEQFi/wCmBMurjDOpfL5qAgZTM30LIiU4Dv8AoSbMShtDMLBr5JlCC00vQaMtz5/gt4hJiGugDYAhqocaoBE032RIoc1IyWqFhF6G6f8AkljBsHmEkk7JFGW5Y+FA0/x8Q0f+mvKOQWeE+oRBnopKScoGHUnUMnBX6HgFOkuActEJRMIuTijiCMBBOWeDh8DFUBDxERhEzOECEhGBPYDRyGQzN7eiWig8jQM90s+OEQnl0N6vFEw0czHogBhoHglI5TMYdmyeqUpMnVA33eSk8NhQdnUVHP6B8mWHRR5dJ6HxR1SkrWbRhFnKJDQoriCQlj7tsgiQQOGDMwKgRAjdMfBAkdzJ/DmoU7nJYQ3SySKhr0ANaKO3EG0nGvRwwiHKkYEhNMAbGSPDEmyinxdw/Sff4CCcpx2aOJjMtmc8MTuAo8J4djRjA1zpHhKBMAwGQ1U4iZDKufJsGB4eASlEOSUAABhHinhINhiQaMMhkIHEBI9Cz8J+UrIRAGbaowijlIEpxVoIWkRzffiBvScprswGsucNuEvCQyHTVmUBJBB4PJPCeiAEQ8ljM9J0x7BFIgAmJpQQzOWphq/8iesGx1SRSTAQyicnkuVh1xLadC1HTJ+b9/yYpTnq1TjVwNvLTrY/gIN4fRr+2ynjT3BKxQbkHL+mbkrbpYnzqzrBcCIt3cV5IQIH9stnuh/9vlYjJBCyEGcFJJAAuU4QNShwoRgFJwg7pxTWyFJ+7985BsEpc+UZp0cykyLKCnJ0SN+uGToyQYQEGgHDFxbS2hLJRAQYjWXPJwuX1Y1fUpMbJ4pMkiWZiw64amcPDNl0eG6hhyATrTltLnc/fLwKSEusjOO0NU0R6hgihhKQgDOGrdWJEzbISd/DToME0zdKJiXXVOZfBKQgIiOjjwT5wYCAhLojGGiUFT1ox945W5cuwZch1uoliPw4bU0OdEamETgmgkxKFoibt3v4TeWkoxyfRSRwhBWlOyJ0cBbLWPZOEnOrAbY9S1x0Gf8AHJOaTNIyVpWHx90oNw689S5OUuDGA5Ts18D+TpM+EZNZbCUZWIwf7ToTqUgA6Ad1YRnWdAy06GUurc9ag7IJkcJnGXEThIQnZlXDB5Fvs3wfUVw4HWttulfw/dKC8JxLxS5Hx2zoj2S9C5yJSViaZouPCEblhDZllFyhRw1JeGvZPSE0rwE3DHBqUUhAdrD7OLdZjq+Wi+L90vUKT0J1aEoS5JLk4bPjrCfKc3GQ6q6Cl2OcocSsmu8kEb+7H8KBJhgzOhcspbJwDbNoWoEkAiSQ70yVqnUPJCD95lUnHSnaQly+HY4noCYctsQM9Ek2G9o2jHRUGEa3SahJqwlpTRuzqxu0kJzwjeqPdc5QkZy7Smi5Zd33sUkl0py8DoXSdGqaqGdmpZSUlicvAAS/ir8p3YSZRAw/JGJtPmkxGU9NEkdJMtBZlUFLgnW6fEJnIpzq3ObT/wDEFi8/dKfL2k32IOodssgjlwumRJxQTgihgJ0bXbAqCDSMwEI1LNSNmgEkXhqPhOoTE69Jy0Cx0l1a4RnREbw1UAOTEvR5+7fzJANzNua06FAHYouYC+MhhHgMrv8AF6snT1cCDgtDOJHUKKRyhlDUIJTVzTstJZgUzTlKblNOAXMXx5aTglyzLacgU3BPVgc/d+ejsUooImR0wnQ7hwueteU7kEgQO69mf900bFGKaaWwMLh5p5dYKddGigLUHQVzMgZZt8dPf5Smhy7PlI0aEhOvuynzI9/lRjp5RMUg43SJdScynSEHcsaBQcSegw+/og8XpLOTDK5CL/szKXUZamSgJPmDphAflObdWpT5tnOfu2ZcJNuxFnfoEvEspLYJAQ9E+pPnrPwlshM9xs+8hFNwigMPiGREOiUAs0pwmUFhhNtVodJIkG0pOzJm6f6TMJEIeiQ+8KPYCEeB366NJ7x+EpJy4nSEJhq06TFiYcN/VNAmwRHhgBg30dqY1hwTtJTy5oRCJTgKaLBAkmyGkLGUqY9nyyg3KcTKVeE5vT7D/9oADAMBAAIAAwAAABAjCwzDCQwxzjTwAAEEnHUOu9f8oP0H331wwzAwwhjAgTz2leevsNb7/CxHHHDAxwwyAYxPmhWHltsd978/wEXnHHHAQzPShI76lVFltuc0vMIF3mAF3nDAiucedorlGndtck13MMHW0hH2Fywjsi68Q4/VnMenXkXk0EHH0H0DTASBKhkWXNg/P8UEXlnPDwxG1ElUCpbbTETb5cfslV3lUXFwxzmWWVUqrkcVLFT7UJtnP8emjFKAxiXllmvtidXWJvIvK4S9fdGjzLOAyR2WPvnGD13Y4Z+aJjvM+TTLLPGCQzlseB3WuB2Ml2paUVsuyD7f8/gwzmPlS3pMpSZFzYvymP8AUUxCTjYMEFdsRxlufNq6oeSApD/UUwyTzaw0wzbtlzAIYR2Rq4wHLrb48evLg9G0KyROonMm66FdRZvL3HXx/wD615G+QT3Z3lOy+cRonP8Aivll8Pf/APKsNir6FrO5dDV1ARpsYXhppDDHb34Z23xFNVKY/tdJZd5Zch1VxDXrrII2PHdxmvNedj1plLxGRFpBBfjv6Qa//J2XgEjZbAJSGM6jd9Nxjbfeqn3LnZADlxKaUG2yew/ZzzNzbPa6xSgZhl7jJuZTcuySQPTzyZxd4u69YEWygJErNBmryS6WEc4wBR5fiKpVD8yxQ4N5KEcvqoSAMMNHPdheXtHvwws01FyEIPTWAWq888PP1wxGM5OFBsfJk3cCKDhE6W808KPf0LTGSm7G9+sykyZhsRpS9POO1WyhROqNSmCxwMyEO2nnZ9bVKX/A8i9j++j+iCDD/ghe8D9dhf8AQvwv/8QAJBEBAAIBBAMAAgMBAAAAAAAAAQAREDEgITBBQFFhcYGhYPD/2gAIAQMBAT8Q/wACGUiesG5PVICtEOtagr5jz0EtieqiozwuEAFMt/iD1OVeIoRdlH5o6+mhQtlKFRLVD1rcpg8JYqVRz6iD+DKLSiM4IcQQ5jqepS+I01snjjR6ZsZzhIIFnMqEFjZ6sJhLwI4TziHMNFF01P8AXqqQ8TUucRKRr/WE4PrBbRNCL8g/YeBKV/XrACxWH7FMF9Yp9Ic3Ln1glE43ky8L0rjtur8Y8uh+ouF5xff4w5uVNJ5GGkvffX4hllgWyxg8MOy+50z+cUU+xJb7DQIReg6meIQjLqDCouVHTBmth1M8YI6Tk1ZcMPSdTHTZUiVP+/zCOyod7s5h0geCOk12mHqcu03jvdpHcadjsI50N5pHrdhhw9DsrrNcOF3Bh2GnWa9F41YdhpvqEcGuXTY5MM85M3P/xAAkEQEAAgICAwEAAgMBAAAAAAABABExECAhMEBBUWFxYJGh8P/aAAgBAgEBPxD/AAFal6tg+stcl6rmLRCPRcfyT6iP0ReqB2zpCVowNrJQQepRT9nbAZbpl0j0wFspEbnxQf5Wi+4c57vqD/vUjcK2xzDrTRS+/U4IlR9VCMyl6z6lB6heMJ1KI9RqkBfE9UkGPTBPsUvrRd+tWi4rnRFJQTI/z6xUCCwgUVKgQgET0qlSolFToMudj0IJQgaTz1A0EMxlGv8ASC9iH78gVoK3UYrzGiEVLhLDMHfUCuTHxCfYyo40ZAfYQlivkVtjnwkJ92J2L5AFn5Fbf5eBxZl4ifdOYTsUzLCjqLbMvgfGIZ0wzBQCf3rRo5Mw8ZngUAFXJ/6uV8GPjOFoP6RVbYZ0cHbHwGzRqq0Yjxc8HwGyMNZjCZeP3gxzzNkwhszFqBxM8GOeZ4BMvIhtjnyqX3GYIHG5lDbMt35GeTiYhtmXjdkI8XTDbMuH/8QAKRABAAICAgEDBAIDAQEAAAAAAREAITFBUWFxEIEgkaGxMMHRQPDx4f/aAAgBAQABPxD3P9h/ma1+rj3ixY9osWLHtFix7RYsfXH879TX+KLFixYse0WLFixYsfTH+w/Q/XFjNihYsWLFixYse0fxyeyA3XkHJhLJ3Zp/O/xR9MWLFix9UfS4sbj5bsjhGEIPzXIZ8JjF1CTnjTIAcmV5ykID8FjJjGw89UBICcP8L7v8kWLH1RY94sWLFj6WGAYXB581UBdcHoVmFG9iOR1UcvPi6UL3YBczxVIpnkbk9xBx9q4zMOpfTiiXA5Er9a1rZrZ/1osWPaPZpvRzh57rQwWWbAClzNNUEdMWWEM9NLJXpCxkPI5rJCvScUw3GE/bzWJkI9Dqkl0Zbll0tz4eSqT2a+7X2X/cixdV6kkMVkC8nR1ZJmn2KCwPLcXEgcELnYmy4PgbMYhNQlp/NkhtyXZmEk8VEs7s2xhj71wSbd5Poa+7X6J/2W8WXKirHb1HNfSHPguU61xZsnXF5LBgqdyBVWQZiQs8MEJjdZlyE5uUg8lQArDeQRFgtRkqjGMMbdmbIVrX6GrZ9pz7z7H8h/DFwp8UMCRPn0oOvPNRAEuMFISZaW4d+VIxDShaqph4NMhkEaKAHJzFdqJZk2WOQ9om4QbjIqQdjl5oVdB08+bC2DsDWta1q1q2febNn/TPpEs7uDLxHgszoWAivSoZawl21zQLAap4tTq8XF8WPSh1cgaimBy/qkvCxsqjpWyX7K6rWta1q195s2f5j3Prw2s0DmxpEV8zqpjU6sGHa7cNzGDhU31YwUQwDR3FTLJWLVQoLnEYu0qoEEHGd2AGQUk5szCSU8YrQ5VrVrVq1fafabPsPtNn/UQTNVAcY9G7fhh6u6CUNRYoIYjFl3TJqgCobrzZRxTkxT0xUxxSoN9XXOWarAghjxQgrVq1q1atWz7TZs+434/1TbjKR60KiRQ5WxdHyimSI+lAGKwLLFylRcFKbGlDNSA1cZOXcUwZdJZMIdpwYqrWta1atmzRs0bNmj7T/qF0GY4vDZtHD9VoHjAh00pGrIIPgLBMYAzE/N2RdWSwgAUaDOJ36VpETez9qmDYoi9eqIIKJEbKnDa3AwTNAwzFT25f3dq1rWtWrVs2bNmz7T7T/onsU1GS6BLYJIZsTMZ+9hXgj9rOCZtWKSSFMh3wV94MEMxkc7N0QZuGIqA7lULUGGsi2MsmX1sMRdKCzKF3LPxV3MENDhp4yXZR2CfI0DBAEB7Gta1rVq+02bPtP859ZY+FExXpmzGawcQZn4ogcF31AkoH7WUyuwki8/OzFD5aBs0iuTsiMvda4IR07R4oQnEVPCldtcBZy22t7imflY9Cw8iBZkAQgSMSozlsJMgOfKUDKQ2UvJFgrMM2AF3XScoyZdJx7GrX2Na1bNmzRs+x9c+0/QP0H0FdrJl0NtEhgjFluDluBbA2Vw2qLuHLVRbaTcBDDUUR7HdHA3lCwqJMzQKxCFcQxFLo5qRGBgbxT7KCRE5/+exr7jWtbPsUpSn1z9J7nsfQWXic/wB2bCsQEURDXrYpNYUzUFmldFykA5sbjilMcjSXNg5KReOKORkqIJDDhmJqYE+T2ieqIVkv3/59jX3Gta+5SlKU95s2bP0T7lPc9ilFomMJw0JMLlIq8N5zIxVDNXWawEhUVfEEKy6k4uDTCRmlJ8Qp9wVdU1zZiW2pq8IJkOJsKAIXEogCutpcemj8Xata1rWtfcpSlP4Z9ylKexSnsXBvhaU3vRWfWxm+BFXJfh1UdcyU9Z5ox+KUh1DJ8Wf4MlD0ri4QaKqlIbPHRqqYUBTVwHDbfWmipX6A1r7hT2KU9p+qbNmlKe57HsexRU5yWOvhFywKMtSQXQbMIj3q4SPYbIhuTFaHNyzna6K86QJMelVrnK59g9grX3H6ClKfVNn2mz7DSlGlPcpSlLkvAw+ljc8UkSAnF3ohJDzDVOSxJAQ/VZ9OKX82UQQD4/FJDkAofA2eVi9ZlHMKfQ4+gD6gNfc9ilKe8/TPsUo0o09ilKUp7HTVUQ2DhoxN3CZOsBpVUXk0NiOjdjwgigTACxDlf/FgP4gA1r7FKfQWPafefpKUpSlKUpSl4bkX29KcU+C0moxR0Ch5qlPCukWW54IqgSuJs49i+4/QGvs+xSlKfRNmzZs+0+xRpSlKU9ilKbojzAMnMP5imYUCpJdeKSGMabqfkshPyTVq8cVMNo7jxMtLPMsmgZsX5K9KY/AceaslavsX2Kta19ylKex9E2bP0FKUpSlKU9gqQgGVWAsMywe/DoebmRhU4YPmlyEnPUpxacWhLGcvTNeBJfSoQO0PHHVgZpwUycEh+L/Ku0B5jYY/toQmUJf+kqq1aqqvY1r9BSlKfVPvNKUpSlKUpSpqONsnq8UyNNsw+rzemBgXKvAbV0XwWoy1P3Fsxgad5R/VJQZGmAw4zUgGwqwmyqwDClHiYLXX9BRFOLkACTwuX91wXcEYRsJABC4/xatWqta1r9JSlP4ylKUpSlIiasoHnwerqzCJnBQx5XNawkZXlu6GNO1RJgEGTk8O2m+lZFYg9F4SAep5ouAgidWJyUkEPNegKZfuAweV4KmkOT+k5fNmxWohi+KpSVM6SxEcv4VeRsZEwj3Q6gE6nkNWdVaq1rWvue5T+MpSlKWAHdt/Fk9RCQ+27LLP/BzQiMHlUQaFNkCTQMUMkMbFCX9FgUR4uIDWfS0iP98zZp598aftJ881VHyXILFTAzYGR0OfXVMDLZlO15rlulAGBh6thMZl7i58zJs5a5JNbe7KAUII3D/9pCiWcx8dUQ7sf7WIII6TVX2bP0FLNPc/gKUpRjKxWQdoJaUy5ieV/RUX3a5bEhkpls5+bOWKMz34qMJAdXDmGz8FJLYVecv2WYLumCiAWqTdnMPUJk8zsoAexHPMBkPUomAzkD1ef1TQAYANVcUXRXqqKOQ78H91chUmY1/9pGy1AxInj/s1wtj6JR0KzmKmYLHddxnbK+LFeOsr/FFATSNmz9M0pRo2bP1nsUr4QsEdv8VlSTbO5pDCUpCSMUxkMDXdEdiPFcCxHFPHPOWxLILOYZaY4y5+CkIxUw8ZgRKvBZU4JgpiV2Xg33Z8n3zVMwrmSOZ/qheWAq2HExMMZKuUSwA4cYZQ7k8LW7plAky6HbUz7g2UjA/380Q6GTzQGFJgnuvyAeR/FHQTIMqNT1ZM5A4ipw4zPLqueAjJN2kCYSasWylJn7KxlL1D7Ua5cjZs2fcaNGjZo/wFN1HkfcmxC4OfnNATDxipLDrWbhM5jMWXINCaskmfGZrQGN/erlYlZz/VQ5iqPCf4KZGoj7092yrSCUybIfXb4phQbrtseEZB9KiGJkYywq8+nzqs6cIokk9PXzYdMCqJECI3qeGKBu/KvwTycNaJgyv+myZCzm87ftNnIojHUNwMF7bKSlTT1SIlmY/Z5Kqis9FQOUnPigBAJdiaK40J6rskVPNKQIESK4gUeKys9lASWuj/AGXOA2fabNmzZs2f4SySjIvgplA5DPoWID604TE781mWWxQFU1kMZTl1UFgwzB3RyHsWemBDvGH9WZ0pJRwiRoSgixbKGtIQrxkcWEraohdFlBPVEMCHnnMA/wAxY1twinKvdTIspBit85OP/KCj5WoUjMPLL+IrEET5m7kCBGuayhFUxO//ACvZwqyAeXI2/wBWRJwuY7slvbdmFEHVRdrzGcV9wzFcAS8yVpIIkRZuhW8TFndG4pk879aNGzRs2aWfqPoiNP8ANVIvIwelLJATxTDT8KAxfVp8kByqmQhjW7ga5YTVkjsdbx3QY2yy5c3Nul926Su4RwlWwQcYHNwuIQS5NhJPGf8A5fX2RIz046pggxRQqVp2lszLaPjK+Cu3VM2azAkMc81gMJfDujlTLrhdZFhM72/BR4OHuwkAE4lqkSzOeihchOANUJITI7nHzdrWMBccEm0OyrxXNHdnQDnS1VGDtOKiVRo2aPtPtP8ACUBmT8ApdYxdJkALkSNTM5qKjIktQwIcC4AcGiyJEebGiSD6TYwQhhiqJ8vrFPKxgPmgwPvn4skIaSSnhl51inRCmcwhiXhhzGOa6pS8BgAwY4brVio2AEq8VlrNE0374g8VTLLHi6lCLB162YBkNE3CAexpDnZI9a33Bmc5biZM65sgIGX71DSMajn/ADQlYhCPDUalXWOK3ZIOVfSnSHZ217A+UNLFg3mrAhhbo0aNGzRs2bP8AKaCa47KVjy3B8EiP7shg5poxgMFEk4SfiojEuBixQZVe6EQCDeN0EGREfgoEQvKtKUQA/SuGvFjFwVPEE9P3dSoCFEMF6zLOYjF9aCNHBtVyaPjulOkNRNjnJiLqV1lmoMYeV9XR81DF1xzLTLFBuDJQEeTtAtRMyOg4o8DGk6ctMFAxOqZyo7leKxAyjPe7HIMpwbbGTE7az+LpAbYblBk8UIJcceZvhR95pkkSPWsjgD02EIi8vFN09ijZ+ibNmzZp7ZqhmD64uIJAlw8UUIGXObGyQtkWIDWIj06uTLA/egKGMMd2YlEb/LQNKgyS1PWhcQCV6LlKkAZSYBRKoAcGWzvnRiULJZjHRUhn5TB3EQHpqs8ApYGSiAKAB5+/B5XFfiZYSD0ehH5oBCUAAYrGDjgsQpYikcoBsxBSmhLBGu3zQjPAGtVGBRNpFgeSWoBBU5IihEwM84ioFQR1x5ajFg1GixGPI+aK4fhEY4oQv1DUJkGfgovYzDPmlPcpZo+bNmzZs2bNG5I0n2pSBGOK8xOH+7GEFKEJIvfRUwMxjFCFlM58WEEceHFWXAicNkN/gOcVITUzqwKCscelKzY4xvS/bVMNlDMmB5hODJ3ZcCQJZ58C5jODmsIgIAGoI5LqfWIzRIIPs4VQFptL4CD+n7elhE2eDi4goqkmdUsLgnRuyJSewWXuWJ5ObQewEC9UZiwJFGa0bIqGUrnuxCBOOf3ecBPFFiE53HFwZZKM7O6BgdQOLuKTrqshXTkJujkDjNiWkMlEXQGn0TZs+tmzZs2bNmjYydn3U7xLQoHf2zciSTuxckCayeBlH4sSQqMu8WBEXxFCRCOJ7iqTBBnEZvAsc5s4FwAeQf7rXTMCUHoJWYqk4DkIEyEYQ6sbBUVYluegCc92XrkxQYO8AZMeWkGNWAxQAc61/o8+lMpVbLOzy+bnyQDVjAhvgpJU2I8WCCI9cetmY6HhyerUjKdsulHAajuKwGYnK4T4qLJMnEWcLIPzRQAjHLZokpip7JKDPLunQxOIrBHWcUG5MZxVBLfrXChMvHFL1hfFH2n2mzZs2bNmzRo0sVzoH0KcDCdVKjUJbMmM91BBMJm5CSLubjxjRLcZcnWqUUSCermggiAPFySsExRFQyvMyP1UJgIVOSY5VcO+LILNLATKSEC/iO6AXKioxUGpTG/m4ADOKYQPDOjnmhBIEmX0ev6uZhDODwPAWaGQK9eKAw7Il2VIw8bmojJynoV4tITxyaJ8BAL1RDkJ5/zcgmnFiJgm80EwJxDDQJKl030wPvRdQCVDwbv7rjL3q8bImfm5ch6N1GGtm6kUfY5s6eJfelmzZs2bNmzZs2fecTeWFX81kMiel07eLBAnBVJZVTAO/ig5kWsYmgMtGcYqaxkB0UAAzHGrIODxVwk6gqVmJsleYEAzve+6W1g3M4KuWdz1qsEgESQWU/364rNIEoKMr4FZiaQMPYu38F7uAkxspnVCaFOyZhsPpBkGsJyOyMWLZl+E22IOgzK0VwJH7UUJIWV3v4qwnK6TirM+EfFnIUut6oZJYM2aiCJzuoWAIEZoggwZluQJljHPxZEZXMJQCwZOK5akcWHiMimLPvNmzZs2fafYb5oWrp83JZMt1yxA/NJiBIq5dxClIinZqvIxA65LIIz/SsdOE+8VCIqiQA6ibBETKJE2YcCIWfBOChuCbkUlGV06zgjFjApg5YcTqDevFHIuMGMCBoi5y4uRUF3tar/AAg8E2OaGI7xcEiH5el74Kvj5rXS2PgjL9qzPDc4xQWeUqCkoYNtXArDqH+6pbeQtgySMvkrJgfPiqSZSM5iqKUnOO9f5sinjfdXL5dxcIzhJglsl5cISLEjiTxUNYhyU0YMj1+ufc+gbEm2UEWfiqApHxYsljGqkJ+rmFIkoTHMsY1WQLMZzzTLCy1Xh5JT5qRDA5w2UTOHdMZAh01mExGVMdRZilGOCDC8uhDzxgCs6hVcgJk0A/eIo1BEQ0hMp61lAnARzc1y5wHdQyQOp77bCkRFkmaMITWNTyuJzBrKVgJJ3uycDMwrx5skUh7uA41hbwgJrJFcAwZrA5BJVlnQcwWS3gzZgZKGrZEGCLhmqZkrFxDOGlFCdyVZDoY1T6Z+spYC8i/BVA4bKANAwlIrDp81MkkcU8IFMtLOBO1ZmBxuKyHmIPtUOAhjmrEEJAnFhOOlrspEMqps2Y/Vws4WSE4np82SmIQuS/4sSQdPxZ6WcYKUiFsDCUJJM8MzmqgJLXEFh0jFTtYrp2CZ2u6gg6tbP4qJy3sP/RQYlZmDFTSloCP82egL8D+bjBWcxFyNOWpr7020MBmnEEASc4zdA7NVlGAybomNE6acjacelRzP2FgKB4CtsYj7T7T7z9ZQ3OdqEE303Se2uGnCqBDJw0c2OLgPXmwCDJGbHiVhzNlTMR+xZgTGcZ4qyrS+tgFhI4jFkswEhMyjgqxJQeOkPm9CW8c2KgJP/TZHqYsnFPmQIGNeaISqGNWTJORDqWqJzHICSfdjE0GNjFNaDxmKKgZLDipOSxDWwAZxjVSB2L63Enh+Khck7Q4roqmM3Oe45URBAZiboIY7KGdmSZmjBRK/NEUIzG5pAtQwPFgE2DHzZs/xzZs5mcAWJAjBYBHdnPDVkwlM7okkxYwEAnnZQ5TnUNQ1qNuqllMKyUJHJ62RTDnd22QFWIOjo7qwIRGZaA6iEBQTudbpqWM5jTUkJGmW7OUzGp6rzEzEm14s9ZZnM5oDwDiGxrHqi4AIzoTNkHGCgglTAjWgOdMlkBJYME0XViHLVVgX0ChY3LMXCIjO2hgDBPLYITKdjqhUsRM4a1mYcYUsjI8zHFwOqUhOvpn3n6JswV+wcx5sj1VGcxuwUm7rB+LwYMcUSgxHMXUgy6mnPmFQPNaxGXHzYwDztmgoWR439rq4DLNnJIOA9SEarYDkBCdlUmCSJR0aYQmUkzqpgaB6UsAywCIaBmSAcJGKYUlBH7FeQAGAjim8UO2wxJJeMJdqWXbUwwZ52KsRCOIdWfhIzVUxLMrcNiIVxPFnBFWGxnCc5Il9as4gI65r2MocqhBOF9Lg+zgaDAzE1uG88WR4zVL9j9V+qbNmzZs3wImksscrISeNUYh6y1DN6uhP4sI48etyzpZRAk7NlXEO2nVcz4X+64XE5xFHJQYfiznADty8Uy+mAVnxiuGGmXUqy5fHRWi+iy2bdDEQ0QBQFO/Wh6EQlB6ZyF3FUFDGrCHRQTA+s2QJkDvmswks8c1BArdliLURhjVmCh4YrIozk3NUyDo8WdsIiHilIhsmtGIMandIDg8LM1XHgK6WEB2+KvCOY06utEGKBcYjigMCUqkeP1zZs2bNGix2KJgjzYO2DViqPFSkQcLoDmH4rMMmCrBlAMc0ZAhZudORv4u4OXVQyOY+aueIj4sZDcaTFSQyLMvjxcJIZczZEt5RXBI5HpUgajmNd1rzgGDkqzEYVfsNIkQEGKxQxVUhEJDNEzgOFQhJnlqGCY8mqDlMmZ7rOFMHxVJSqGWKSTTEWJZJ3ihtAiCZxYCQGMo1FWVEMyUJZEdOa+JjisEpg8HNngnW0ikQM8bzc0/gTZs2aNUAzs9CgDHOazZdm0817E4mBrY0Qu4qYJmuMYITFJCEx+qk7c9aojOzGOq0kHhXnX8VxAiDNGYOHmp4BXK1gYx4GL6Ah5pAMPTVhPAU8pSiEiCaPFLGh2QxQzhKOzVGZIcYZqJJYdcVBxJjD5qeJjL60PpYMU+QQR60sAjxVKZmz62c5qIkobOeMZsBoE1uoIlrxNQJIObEQiJMebJAGR1OGmEyYNc/exMc5r+x/f8ALJwQmzwUfNELgSMtwjE5sVmnVaTA4ebLPnFxLBOROKAhaTc4sUzEOjd/B6rgf3UQbaqx0QRPZVdMP91I41w4s+3FQJAvKtwgu012bEjD8FBGcZmgIWAEYZiobNxnNOCUuqzKYbnxT3hVmqJdRqvsHVmah3I3Kg17+9B5Ma0BLG4uYMnStkrCBKUriInlsbKQcd1gk2O7oBvlNUxHCPzSIBS93v8AljA6AssGSDq9ExUlosVyTkrZxI4idWYYJZmZsGeZRihETQZmwtZWDGOadrId3OO+DqqSIgmGqBMJHzcYRJMUdXvFWLyDu4kYCYK9OFHfQ+9A/KH1qRlHxmqNhyF5rwkiFapCYS9P/agglO2dWQCsMs15osr9qiFM8LzWWTB4oE32phjYgmiT4JrJWSfi6Mo5l1URPJeYyxK2GEYRKtUBF0SxqQMUUiGC6yzCP4Z9psyVulhRuag13lsj183kk6skQTnq5Mz8tUTEHpoBMOMyXIkycxmqI/FiApOO7KM4lTFEqSdufFJJC0xXGN2MCTLVmZOR19q6LLC8KWcDl6sAqLmVEMZ7rmQfAschHnmo0wMY3S4J8K4VLJTxwD7lYJkZ8VBwyclnLpGaiSGQ/wDaQpFWziIn09LKgARsoZqqCfLSscHNRwwOZspazu9xkrz6P65+pCXvZyEe6DtW0FDOqMyxrm5wSRFSPyFbeUDhpE862B95SQMicUKRgRnrzXSQRpLCglOBXP3qiSDNIkh4aO8J6xcws4nxZwJMJ8TzXSFWPNcABOOOc1qAjGs2WAK6f81IAV2zr1oDCCwMjMXNlmcMVpyOYK/IQl3ql0PFnmIPM7sCD46uM3KsXOZMSXZWxBj1j5shEpM71igiRI3usEQYxLXbDM9USAGJzQgQenNmoXB5r9Nr7z7z9PNd0IE6VmVkuDM/e4MPFnElUjqgZOZ9Lz4AplIhzWJREi8FUy+T+aTY6nBSAKdTUyeAzxUe6swCRR8i/ehvwBDKB35mvBk8L+KCSgSybrNImB/uiMgQziqzCBwRu44MP9VlEjOBTdkakmCOaqMwuGbhmWH/ALNQnMZZrw/koeWijljxSVWo9aqlwYKr/wCTaswYZ1ZAS5nOKcMSMTw0kDlQxEXLkw9vNVUAsTrm+ZK5OKIDA7sReRs2f4oaaSIVciiCVcQVDtpgS5flVMdciUbhSeapHazKYh2a0Ui7j/NUA4wZ1RSWDzNe/bilJjergDiTNzy7fFc4iyjo/wDtHEZ59aHeMmo1VImPHmwiioDMrJESEw5fNYSLOiZa4SJGwiZeZVYswEGK6nVkkH7WfeOmpkUBWXG6liUz/FeAa3UmMRG5/NEWIFtoQKWT7VAmMgYfNBbQ5mf8UBEZt+tYihiqfSLn6D60F2UyYJlqwrHxeYc3Fj0WE5jMzQHeI2VTomZi7KR81TOIDY0qJxBYhNYJujOV/I/a5BNKUMkxRWMyIpiRFIdHFElhgzZG/HOG5iFHE1VJgNevzchYd4swdrOoomFOSWLiCFds2OEefihsaSwko/Nio0MrT8Uy19ihP0m+0VoDMLRhEk9tIXAcwDVcYU4LNKC5jcTVUbGYB5rYWVy4rBGYu1kwfuz9R9JWHqaomQ1NHeqMKdc2ScFjJiDquxERzdIDNcIzYxiMDHOFRnv8VSS8YbDumKQ6LkpFlZaNw1MNwbC5swdDB+9lASApgs9ZqEZBgWSyg6mQPSociEdWCIExjPxZbERnc18SESMliOxI0kJiaAxQIeM+a+LHBVc7zZMcIcUv+NmqQIAXdkIkJwWYhVdPFhh4OLkCAi6kke1sbFkETcwBLH4sJwjB7B9GL//Z" alt="Xiaoyu Chen 陈晓宇">
+    </div>
+  </header>
+
+  <section id="research">
+    <h2><span class="idx">01</span> <span class="en">Research</span><span class="zh">研究方向</span></h2>
+    <p class="lead"><span class="en">I study corporate finance and FinTech with large-scale multimodal and alternative data, machine learning, and causal inference — and I build world models for decision-making.</span><span class="zh">我的研究聚焦公司金融与金融科技，方法上依托大规模多模态和另类数据、机器学习和因果推断，并构建面向决策的世界模型。</span></p>
+    <div class="interests">
+      <span class="chip"><span class="en">Corporate Finance</span><span class="zh">公司金融</span></span>
+      <span class="chip"><span class="en">FinTech</span><span class="zh">金融科技</span></span>
+      <span class="chip"><span class="en">World Models</span><span class="zh">世界模型</span></span>
+      <span class="chip"><span class="en">Text-as-Data &amp; LLMs</span><span class="zh">文本计量与大语言模型</span></span>
+      <span class="chip"><span class="en">Labor Markets</span><span class="zh">劳动力市场</span></span>
+      <span class="chip"><span class="en">Information Disclosure</span><span class="zh">信息披露</span></span>
+    </div>
+  </section>
+
+  <section id="publications">
+    <h2><span class="idx">02</span> <span class="en">Publications</span><span class="zh">发表与录用论文</span></h2>
+    <p class="lead"><span class="en">Peer-reviewed, CSSCI-indexed (in Chinese).</span><span class="zh">均为 CSSCI 来源期刊（中文）。</span></p>
+    <ol class="papers">
+      <li><div class="ptitle"><span class="en">Young Labor Preference, Labor Costs and Corporate Production Performance: Evidence from Tens of Millions of Online Job Postings</span><span class="zh">年轻劳动力偏好、人工成本和企业生产绩效——基于互联网招聘平台千万级数据的分析</span></div>
+        <div class="pmeta"><span class="en"><em>Journal of Finance and Economics</em>, forthcoming Jan 2026 · first &amp; corresponding author · with Li Liao, Weiqiang Zhang, Hengshu Zhu, Jingya Hou</span><span class="zh">《财经研究》2026年1月刊 · 第一作者兼通讯作者 · 与廖理、张伟强、祝恒书、侯京娅 · 2025年中国政策评估论坛入选论文</span></div></li>
+      <li><div class="ptitle"><span class="en">Unified Household Registration, Identity, and Risk Management</span><span class="zh">统一户籍、身份认同和风险管理</span></div>
+        <div class="pmeta"><span class="en"><em>Economic Science</em>, 2023 · corresponding &amp; second author · Outstanding Thesis Award of Beijing · CNKI top 1% highly cited</span><span class="zh">《经济科学》2023年8月刊 · 通讯作者兼第二作者 · 北京市优秀毕业设计 · 知网前 1% 高被引论文</span></div></li>
+      <li><div class="ptitle"><span class="en">Health-Induced Poverty Returns, Debt Burden, and Critical Illness Insurance Compensation</span><span class="zh">因病返贫、债务负担与大病保险补偿</span></div>
+        <div class="pmeta"><span class="en"><em>Insurance Studies</em>, 2024 · first author</span><span class="zh">《保险研究》2024年4月刊 · 第一作者</span></div></li>
+      <li><div class="ptitle"><span class="en">The Qing Juanna System, Governance of Purchased Officials, and Social Conflict (1722–1911)</span><span class="zh">清代捐纳制度、捐官治理和社会冲突（1722–1911年）</span></div>
+        <div class="pmeta"><span class="en"><em>Economic Science</em>, 2025 · third author</span><span class="zh">《经济科学》2025年第2期 · 第三作者</span></div></li>
+      <li><div class="ptitle"><span class="en">The Employment Effects of Government-Guided Funds: Financing Constraints and Internal–External Supervision</span><span class="zh">政府引导基金的就业效应：基于融资约束和内外部监督视角</span></div>
+        <div class="pmeta"><span class="en"><em>Studies of Modern Finance</em>, 2025 · first author</span><span class="zh">《现代金融研究》2025年第4期 · 第一作者</span></div></li>
+      <li><div class="ptitle"><span class="en">Cross-Border Capital Flows and Supply-Chain Risk under Financial Opening</span><span class="zh">金融开放背景下的跨境资本流动与供应链风险研究</span></div>
+        <div class="pmeta"><span class="en"><em>Financial Regulation Research</em>, accepted &amp; forthcoming · first author</span><span class="zh">《金融监管研究》录用待刊 · 第一作者</span></div></li>
+      <li><div class="ptitle"><span class="en">Hukou Settlement Thresholds, Corporate Transformation, and Digital Development</span><span class="zh">落户门槛、公司转型和数字化发展</span></div>
+        <div class="pmeta"><span class="en"><em>Review of Investment Studies</em>, 2024 · second author</span><span class="zh">《投资研究》2024年3月刊 · 第二作者</span></div></li>
+      <li><div class="ptitle"><span class="en">Manufacturing Transformation and the Development of New Quality Productive Forces: Evidence from MD&amp;A Texts</span><span class="zh">制造业转型升级与新质生产力发展——来自企业“管理层讨论与分析”文本的证据</span></div>
+        <div class="pmeta"><span class="en"><em>Industrial Economic Review</em>, 2025 · first author · Outstanding Paper Award</span><span class="zh">《产业经济评论》2025年第1期 · 第一作者 · 期刊优秀论文奖</span></div></li>
+      <li><div class="ptitle"><span class="en">From “Nominal Disclosure” to “Substantive Action”: Social Credit Systems Reshape Corporate Environmental Disclosure</span><span class="zh">从“名义披露”到“实质行动”：社会信用体系重塑企业环保信息披露</span></div>
+        <div class="pmeta"><span class="en"><em>Journal of Zhengzhou University (Phil. &amp; Soc. Sci.)</em>, accepted &amp; forthcoming · first author</span><span class="zh">《郑州大学学报（哲学社会科学版）》录用待刊 · 第一作者</span></div></li>
+      <li><div class="ptitle"><span class="en">Technology Finance Driving the Deep Integration of Science-Technology Innovation and Industrial Innovation</span><span class="zh">科技金融驱动科技创新与产业创新深度融合的逻辑与路径</span></div>
+        <div class="pmeta"><span class="en"><em>Reform</em>, accepted &amp; forthcoming · corresponding author · with Jianlong Yang, Tianyi Li</span><span class="zh">《改革》录用待刊 · 通讯作者 · 与杨建龙、李天一</span></div></li>
+
+    </ol>
+    <div class="other-writings">
+      <div class="group-label"><span class="en">Other Writings</span><span class="zh">其他文章</span></div>
+      <ol class="papers">
+        <li><div class="ptitle"><span class="en">How to Do Technology Finance Well: Lessons from Singapore’s Equity Market Support for Hard Tech</span><span class="zh">如何做好科技金融大文章——新加坡股市支持硬科技的经验与教训</span></div>
+          <div class="pmeta"><span class="en"><em>Tsinghua Financial Review</em>, Issue 9, 2026 · invited cover-feature article · with Tao Chen</span><span class="zh">《清华金融评论》2026年第9期封面专题约稿 · 与陈涛</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="working">
+    <h2><span class="idx">03</span> <span class="en">Working Papers</span><span class="zh">工作论文</span></h2>
+
+    <div class="group-label"><span class="en">Computer Science &amp; Machine Learning</span><span class="zh">计算机与机器学习</span></div>
+    <ol class="papers">
+      <li><div class="ptitle">Immaterial Apart, Material Together: Statement-Level Disclosure Regulation under Cheap Machine Aggregation</div>
+        <div class="pmeta"><span class="en">R&amp;R <span class="tag">Finance Research Letters</span></span><span class="zh"><span class="tag">Finance Research Letters</span> 返修中</span></div></li>
+      <li><div class="ptitle">Identifying Judicially-Challenged Patents: A Tabular Benchmark on Chinese Listed-Firm Data with Positive-Unlabelled Re-evaluation</div>
+        <div class="pmeta"><span class="en">under review <span class="tag">Journal of Forecasting</span> · with Tianyi Li, Xuanyi Zhang</span><span class="zh"><span class="tag">Journal of Forecasting</span> 审稿中 · 与李天一、张玄逸</span></div></li>
+      <li><div class="ptitle">Isotropy over Discreteness: A Controlled Study of Latent Bottleneck Design in Small Online World Models</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">A Six-Fault Anatomy of World-Model Reproduction</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">A Tabular Benchmark for Chinese Intellectual-Property Judgment Prediction</div>
+        <div class="pmeta"><span class="en">with Jiujuan Zhang, Zixuan Zhang</span><span class="zh">与张久娟、张紫璇</span></div></li>
+      <li><div class="ptitle">A Latent-Action World Model for Dexterous Robotic Piano Performance</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">Equilibrium World Models for Labor Markets: A Minimal-Sufficient-State Approach</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">Artificial Intelligence, Managerial Span of Control, and Industrial Concentration: An Agent-Based General-Equilibrium Analysis</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">AI Buyer Agents, Platform Steering, and Optimal Commissions</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">Algorithmic Tacit Collusion among AI Underwriters: Revisiting the Seven-Percent Solution</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+    </ol>
+
+    <div class="group-label"><span class="en">FinTech &amp; Corporate Finance</span><span class="zh">金融科技与公司金融</span></div>
+    <ol class="papers">
+      <li><div class="ptitle">Scarred by Collapse: Experienced Corporate Collapses and Retail Investment Retreat</div>
+        <div class="pmeta"><span class="en">with Guangyan Gan, Lin William Cong, Pulak Ghosh · India, account-level brokerage data</span><span class="zh">与 Guangyan Gan、Lin William Cong、Pulak Ghosh · 印度券商账户级数据</span></div></li>
+      <li><div class="ptitle">Demonetization and Household Financialization: Evidence from India</div>
+        <div class="pmeta"><span class="en">with Guangyan Gan, Lin William Cong, Pulak Ghosh</span><span class="zh">与 Guangyan Gan、Lin William Cong、Pulak Ghosh</span></div></li>
+      <li><div class="ptitle">Concession and Debt Recovery</div>
+        <div class="pmeta"><span class="en">working paper · with Wenzhi Dave Ding, Xincheng Wang, Ning Pan</span><span class="zh">工作论文 · 与丁文治、王新程、潘宁</span></div></li>
+      <li><div class="ptitle">The Residual of Persuasion: Vocal State and Repayment in Debt Collection</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">Name and House: Brand Trust and Pricing in China’s Real Estate Brokerage</div>
+        <div class="pmeta"><span class="en">submitted to &amp; selected for RUSE2026 · with Tianyi Li, Xuanyi Zhang, Tao Chen</span><span class="zh">投稿并入选 RUSE2026 · 与李天一、张玄逸、陈涛</span></div></li>
+      <li><div class="ptitle">Age-Based Employment Barriers during the Prime Working Age Drive Individuals to Proactive Career Behaviours</div>
+        <div class="pmeta"><span class="en">R&amp;R <span class="tag">China Economic Review</span> · with Li Liao, Weiqiang Zhang, Hengshu Zhu, Jingya Hou</span><span class="zh"><span class="tag">China Economic Review</span> 返修中 · 与廖理、张伟强、祝恒书、侯京娅</span></div></li>
+      <li><div class="ptitle">Fueling Jobs or Crowding Out? The Dual Role of Government-Guided Funds</div>
+        <div class="pmeta"><span class="en">R&amp;R <span class="tag">Emerging Markets Review</span> · with Lingyan Suo, Ying Wu, Juan Chen</span><span class="zh"><span class="tag">Emerging Markets Review</span> 返修中 · 与锁凌燕、Ying Wu、陈娟</span></div></li>
+      <li><div class="ptitle">Investor Uncertainty and Corporate Performance: Evidence from China’s Interactive Q&amp;A Platforms</div>
+        <div class="pmeta"><span class="en">under review <span class="tag">Journal of Forecasting</span></span><span class="zh"><span class="tag">Journal of Forecasting</span> 审稿中</span></div></li>
+      <li><div class="ptitle">The Skill Structure and Skill Prices of China’s Labor Market: Evidence from 393 Million Online Job Postings</div>
+        <div class="pmeta"><span class="en">under review <span class="tag">Humanities and Social Sciences Communications</span></span><span class="zh"><span class="tag">Humanities and Social Sciences Communications</span> 审稿中</span></div></li>
+      <li><div class="ptitle"><span class="en">Legal Deadlines and the Measurement of Delisting Risk</span><span class="zh">法定期限与退市风险的度量</span></div>
+        <div class="pmeta"><span class="en">under review <span class="tag">Journal of Financial Stability</span> · with Tianyi Li, Xuanyi Zhang</span><span class="zh"><span class="tag">Journal of Financial Stability</span> 审稿中 · 与李天一、张玄逸</span></div></li>
+      <li><div class="ptitle"><span class="en">Order-Flow Composition and the Information in Mandatory Counterparty Disclosure</span><span class="zh">订单流构成与强制对手方披露的信息含量</span></div>
+        <div class="pmeta"><span class="en">under review <span class="tag">Journal of Business Ethics</span> · with Xuanyi Zhang, Tianyi Li · corresponding author</span><span class="zh"><span class="tag">Journal of Business Ethics</span> 审稿中 · 与张玄逸、李天一 · 通讯作者</span></div></li>
+      <li><div class="ptitle">Stay with or out of Family: Job Location Decisions during COVID-19 from Online Job-Seeking Behaviours</div>
+        <div class="pmeta"><span class="en">working paper · with Weiqiang Zhang, Jingya Hou, Lu Liu</span><span class="zh">工作论文 · 与张伟强、侯京娅、刘璐</span></div></li>
+      <li><div class="ptitle">Kinship Is Not Favor: Same-Origin Ties, Debt Collection, and the Boundary of Relational Cues</div>
+        <div class="pmeta"><span class="en">working paper · with Xincheng Wang, Wenzhi Ding</span><span class="zh">工作论文 · 与王新程、丁文治</span></div></li>
+      <li><div class="ptitle">Pressure and Treasure: Officials’ Carbon Pressure and Corporate Bank Financing</div>
+        <div class="pmeta"><span class="en">selected paper, China FinTech Research Conference · with Emma Li, Zhengwei Wang, Jiujuan Zhang</span><span class="zh">中国金融科技学术年会入选论文 · 与 Emma Li、王正位、张久娟</span></div></li>
+      <li><div class="ptitle">Where Policy Points, Prices Follow: Government Green-Development Attention and the Green Premium</div>
+        <div class="pmeta"><span class="en">with Ruijia Zhang, Zhengwei Wang</span><span class="zh">与张睿佳、王正位</span></div></li>
+      <li><div class="ptitle">AI-Washing and Stock Price Crash Risk</div>
+        <div class="pmeta"><span class="en">with Motong Wen, Lu Liu, Jia He</span><span class="zh">与文默彤、刘璐、何佳</span></div></li>
+      <li><div class="ptitle">Technology Finance and Supply Chain Uncertainty</div>
+        <div class="pmeta"><span class="en">with Tianyi Li, Xuanyi Zhang</span><span class="zh">与李天一、张玄逸</span></div></li>
+      <li><div class="ptitle">The Deterrence and Spillover Effects of Securities Regulatory Supervision: Machine Learning and Game Theory</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">Virtual Reality Property Tours and Housing Market Performance: Micro-Evidence from an Online Real Estate Platform</div>
+        <div class="pmeta"><span class="en">with Lu Liu, Qiyuan Zhu, Zhengwei Wang</span><span class="zh">与刘璐、朱齐媛、王正位</span></div></li>
+      <li><div class="ptitle">Ask and They Shall Innovate: Retail Investor Information Demand and Corporate Innovation</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">The Difference between One-Way and Two-Way Communication: Evidence from Investor Interaction Platforms</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+      <li><div class="ptitle">Local Demand, National Prices: The Skill Geography of Chinese Cities from 393 Million Job Postings</div>
+        <div class="pmeta"><span class="en">working paper</span><span class="zh">工作论文</span></div></li>
+    </ol>
+
+    <div class="group-label"><span class="en">In Chinese</span><span class="zh">中文工作论文</span></div>
+    <ol class="papers">
+      <li><div class="ptitle"><span class="en">Technology Finance and Supply-Chain Volatility: A Game-Theoretic View under Incomplete Information</span><span class="zh">科技金融与供应链波动：不完全信息博弈的视角</span></div>
+        <div class="pmeta"><span class="en">R&amp;R <span class="tag">Chinese Review of Financial Studies</span> · with Tianyi Li, Xuanyi Zhang</span><span class="zh"><span class="tag">金融评论</span> 返修中 · 与李天一、张玄逸</span></div></li>
+      <li><div class="ptitle"><span class="en">How Corporate “Going Global” Drives Disruptive Innovation</span><span class="zh">企业走出去何以驱动颠覆性创新</span></div>
+        <div class="pmeta"><span class="en"><em>Economic Management</em> · revise &amp; resubmit · with Tianyi Li, Xuanyi Zhang</span><span class="zh">《经济管理》返修中 · 与李天一、张玄逸</span></div></li>
+      <li><div class="ptitle"><span class="en">The Systemic-Risk Effects of Bank Artificial-Intelligence Adoption</span><span class="zh">银行人工智能应用的系统性风险效应研究</span></div>
+        <div class="pmeta"><span class="en"><em>Rural Finance Research</em> · revise &amp; resubmit · with Ningning Hu, Guanyu Hou; corresponding author</span><span class="zh">《农村金融研究》修回中 · 与胡宁宁、侯冠宇，通讯作者</span></div></li>
+      <li><div class="ptitle"><span class="en">Intelligent Manufacturing and Innovation in Strategic Emerging Industries: A Quasi-Natural Experiment</span><span class="zh">智能制造赋能战略性新兴产业创新——来自智能制造试点项目的准自然实验</span></div>
+        <div class="pmeta"><span class="en">R&amp;R <span class="tag">Management Review</span> · with Jianlong Yang, Tianyi Li</span><span class="zh"><span class="tag">管理评论</span> 返修中 · 与杨建龙、李天一</span></div></li>
+      <li><div class="ptitle"><span class="en">Retail Investor Heterogeneity, Belief Transmission, and Trading Decisions</span><span class="zh">个人投资者异质性、信念传递与交易决策</span></div>
+        <div class="pmeta"><span class="en">R&amp;R <span class="tag">Journal of Management Sciences in China</span> · with Lu Liu, Zhengwei Wang</span><span class="zh"><span class="tag">管理科学学报</span> 返修中 · 与刘璐、王正位</span></div></li>
+      <li><div class="ptitle"><span class="en">The Disclosure Effect of Credit-System Development: Evidence from AI Large Language Models and Machine Learning</span><span class="zh">信用建设的信息披露效应：来自 AI 大语言模型和机器学习的证据</span></div>
+        <div class="pmeta"><span class="en">under review <span class="tag">Journal of Financial Research</span> · with Zixuan Zhang, Zhengwei Wang</span><span class="zh"><span class="tag">金融研究</span> 外审中 · 与张紫璇、王正位</span></div></li>
+      <li><div class="ptitle"><span class="en">The Disclosure Effect of Public-Data Opening: Evidence from Machine Learning</span><span class="zh">公共数据开放的信息披露效应——基于机器学习技术的研究</span></div>
+        <div class="pmeta"><span class="en">under review <span class="tag">Journal of Financial Research</span> · with Linrui Huang, Zhengwei Wang</span><span class="zh"><span class="tag">金融研究</span> 外审中 · 与黄林蕤、王正位</span></div></li>
+
+    </ol>
+  </section>
+
+  <section id="education">
+    <h2><span class="idx">04</span> <span class="en">Education</span><span class="zh">教育背景</span></h2>
+    <div class="edu">
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Tsinghua University, PBC School of Finance</span><span class="zh">清华大学五道口金融学院</span></span><span class="when">2022–2025</span></div>
+        <div class="edu-detail"><span class="en">Ph.D. in Finance · Advisors: Li Liao, Zhengwei Wang, Weiqiang Zhang</span><span class="zh">金融学博士 · 导师：廖理、王正位、张伟强</span></div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Peking University, School of Economics</span><span class="zh">北京大学经济学院</span></span><span class="when">2018–2022</span></div>
+        <div class="edu-detail"><span class="en">B.A. in Risk Management and Insurance · Double major in Sociology · Advisor: Lingyan Suo</span><span class="zh">风险管理与保险学 本科 · 社会学双学位 · 导师：锁凌燕</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2><span class="idx">05</span> <span class="en">Experience &amp; Visiting</span><span class="zh">经历与海外研习</span></h2>
+    <div class="edu">
+            <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Nanyang Technological University, Nanyang Business School</span><span class="zh">新加坡南洋理工大学商学院</span></span><span class="when"><span class="en">Since 2026</span><span class="zh">2026 至今</span></span></div>
+        <div class="edu-detail"><span class="en">Research Fellow (Postdoctoral) · Advisors: Jun Yang, Lin William Cong</span><span class="zh">研究员（博士后）· 合作导师：Jun Yang、Lin William Cong</span></div>
+      </div>
+<div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Tutor, Nanyang Technological University</span><span class="zh">新加坡南洋理工大学 课程导师（Tutor）</span></span><span class="when">2026</span></div>
+        <div class="edu-detail"><span class="en">GP8000 Artificial Intelligence Literacy, NTU Graduate College (PGR Interdisciplinary Collaborative Core)</span><span class="zh">研究生院 GP8000《人工智能素养》（PGR 跨学科协作核心课程）</span></div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Teaching Assistant, Tsinghua University</span><span class="zh">清华大学 课程助教</span></span><span class="when">2023–2025</span></div>
+        <div class="edu-detail"><span class="en">FinTech Theory and Practice; Theory of Finance; Principles of Finance</span><span class="zh">《金融科技理论与实践》《金融学理论》《金融学基础》</span></div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Research Assistant, Zheshang Securities Co., Ltd.</span><span class="zh">浙商证券股份有限公司 助理研究员</span></span><span class="when">2022–2023</span></div>
+        <div class="edu-detail"><span class="en">Macro Research</span><span class="zh">宏观研究</span></div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Research Assistant, BOSS Zhipin Career Science Lab</span><span class="zh">BOSS 直聘职业科学实验室 助理研究员</span></span><span class="when">2023</span></div>
+        <div class="edu-detail"><span class="en">Team: Hengshu Zhu</span><span class="zh">所在团队：祝恒书</span></div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Risk Consulting Industry Researcher, Deloitte Consulting (Shanghai), Beijing Branch</span><span class="zh">德勤咨询（上海）北京分公司 风险咨询行业研究员</span></span><span class="when">2020</span></div>
+        <div class="edu-detail"><span class="en">Supply-Chain Project Team</span><span class="zh">产业链项目组</span></div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Visiting Study, London School of Economics and Political Science (LSE)</span><span class="zh">伦敦政治经济学院（LSE）访学</span></span><span class="when">Sep–Oct 2024</span></div>
+        <div class="edu-detail"><span class="en">London, United Kingdom</span><span class="zh">英国·伦敦</span></div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-head"><span class="school"><span class="en">Overseas Field Study, China Railway 4th Bureau in Mongolia</span><span class="zh">蒙古国 中铁四局 海外研习</span></span><span class="when">Jul–Aug 2024</span></div>
+        <div class="edu-detail"><span class="en">Ulaanbaatar, Mongolia</span><span class="zh">蒙古国·乌兰巴托</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2><span class="idx">06</span> <span class="en">Research Projects</span><span class="zh">研究项目</span></h2>
+    <ul class="plainlist">
+      <li><span class="en">China Development Research Foundation project, “Commercial Health Insurance and Individual Medical Burden.” Main participant, 2024–2025.</span><span class="zh">中国发展研究基金会课题“商业健康保险与个人医疗负担”，主要参与人，2024–2025。</span></li>
+      <li><span class="en">Ministry of Education Key Research Base Major Project, “Research on China’s Multi-Tier Pension System.” Participant, 2022–present.</span><span class="zh">教育部人文社会科学重点研究基地重大项目“中国特色多层次养老保障体系研究”，参与人，2022 年至今。</span></li>
+      <li><span class="en">Data-Driven Research on the Labor Market, commissioned by Beijing BOSS Zhipin Co., Ltd. Main participant, 2022–2024.</span><span class="zh">数据驱动下的就业市场研究，北京华品博睿网络技术有限公司委托项目，主要参与人，2022–2024。</span></li>
+    </ul>
+  </section>
+
+  <section id="honors">
+    <h2><span class="idx">07</span> <span class="en">Honors &amp; Awards</span><span class="zh">荣誉奖项</span></h2>
+    <ul class="plainlist">
+      <li><span class="en">Outstanding Graduate of Beijing</span><span class="zh">北京市优秀毕业生</span></li>
+      <li><span class="en">Tsinghua University Friends–China Gold Coin Scholarship, Wuhai Talent Scholarship, and CFA Scholarship (Tsinghua University)</span><span class="zh">清华大学清华之友——中国金币奖学金、乌海英才奖学金、CFA 奖学金</span></li>
+      <li><span class="en">Industrial Economic Review Outstanding Paper Award</span><span class="zh">《产业经济评论》优秀论文奖</span></li>
+      <li><span class="en">Outstanding Thesis Award of Beijing</span><span class="zh">北京市优秀毕业设计</span></li>
+      <li><span class="en">Outstanding Graduate, Outstanding Student Leader, and Academic Excellence Award (Peking University)</span><span class="zh">北京大学优秀毕业生、优秀学生干部、学习优秀奖</span></li>
+      <li><span class="en">First Prize, PKU Challenge Cup</span><span class="zh">北京大学挑战杯一等奖</span></li>
+      <li><span class="en">Special Prize, Jiangsu Province “Finance Empowering High-Quality Economic Development” Research and Innovation Practice Competition</span><span class="zh">江苏省“金融赋能经济高质量发展”科研创新实践大赛特等奖</span></li>
+    </ul>
+  </section>
+
+  <section id="more" class="misc">
+    <h2><span class="idx">08</span> <span class="en">Service &amp; Skills</span><span class="zh">学术服务与技能</span></h2>
+    <p><b><span class="en">Reviewing.</span><span class="zh">审稿。</span></b> <span class="en"><em>Economic Modelling</em>, <em>Economic Analysis and Policy</em>, <em>Finance Research Letters</em>; program committee, CIKM (CCF-listed).</span><span class="zh"><em>Economic Modelling</em>、<em>Economic Analysis and Policy</em>、<em>Finance Research Letters</em> 审稿人；CIKM（CCF 会议）程序委员会审稿人。</span></p>
+    <p><b><span class="en">Software.</span><span class="zh">软件。</span></b> <span class="en">Python, MATLAB, R, Stata.</span><span class="zh">Python、MATLAB、R、Stata。</span></p>
+    <p><b><span class="en">Certifications.</span><span class="zh">职业资格。</span></b> <span class="en">CFA Level I; FRM Level II.</span><span class="zh">CFA 一级；FRM 二级。</span></p>
+  </section>
+
+  <footer>
+    <span>© Xiaoyu Chen · 陈晓宇</span>
+    <span><span class="en">Nanyang Business School, NTU</span><span class="zh">新加坡南洋理工大学商学院</span></span>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var root=document.documentElement, btn=document.getElementById('lang');
+    function setLang(l){ root.setAttribute('data-lang',l); root.setAttribute('lang', l==='zh'?'zh':'en'); }
+    setLang('en');
+    btn.addEventListener('click',function(){
+      setLang(root.getAttribute('data-lang')==='zh'?'en':'zh');
+    });
+  })();
+</script>
+
+</body>
+</html>
